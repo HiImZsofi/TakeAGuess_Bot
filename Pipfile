@@ -8,6 +8,8 @@ requests = "*"
 discord = "*"
 python-dotenv = "*"
 googlemaps = "*"
+gmaps = "*"
+numpy = "*"
 
 [dev-packages]
 
