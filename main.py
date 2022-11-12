@@ -19,7 +19,7 @@ MAPS_TOKEN = os.getenv("MAPS_TOKEN")
 
 gmaps = googlemaps.Client(key=MAPS_TOKEN)
 #Authenticate to Google Maps
-gmaps.configure(MAPS_TOKEN)
+#gmaps.configure(MAPS_TOKEN)
 
 # Create bot
 client = commands.Bot(intents=discord.Intents.all() , command_prefix= "!")
@@ -55,7 +55,7 @@ async def coordinates(channel):
 async def startgame(ctx):
     await ctx.send('Welcome the game will start in 5 seconds.\nGet ready!')
     time.sleep(5)
-    await ctx.send('First round\nhttps://maps.googleapis.com/maps/api/streetview?size=400x400&location=34.478005,-51.224765&fov=80&heading=70&pitch=0&key='+GTOKEN)
+    await ctx.send('First round\nhttps://maps.googleapis.com/maps/api/streetview?size=400x400&location=34.478005,-51.224765&fov=80&heading=70&pitch=0&key='+MAPS_TOKEN)
 
 def getCountry(lat, long):
     reverse_geocode_result = gmaps.reverse_geocode((lat, long))
