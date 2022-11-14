@@ -43,22 +43,33 @@ async def coordinates(channel):
 async def startgame(ctx):
     await ctx.send('Welcome the game will start in 5 seconds.\nGet ready!')
     time.sleep(5)
-    await ctx.send('First round\nhttps://maps.googleapis.com/maps/api/streetview?size=400x400&location=34.478005,-51.224765&fov=80&heading=70&pitch=0&key='+MAPS_TOKEN)
+    await ctx.send('First round\n'+formatLink())
 
-def generateCoordinates():
-    x = random.randrange(-90, 90)
-    y = random.randrange(-180, 180)
+def generateXCoordinate():
+    x = random.uniform(-90.0000000, 90.000000)
     xdecimal = round(x, 6)
+    print(xdecimal)
+    return xdecimal
+
+def generateYCoordinate():
+    y = random.uniform(-180.000000, 180.000000)
     ydecimal = round(y, 6)
+    print(ydecimal)
+    return ydecimal
  
 #Function to replace longitude and latitude in link
-def formatLink(link):
-    reverse_geocode_result = gmaps.reverse_geocode((xdecimal, ydecimal))
-    while(reverse_geocode_result[len(reverse_geocode_result)-1]['address_components'][len(reverse_geocode_result[len(reverse_geocode_result)-1]['address_components'])-1]['types'][0] == 'country'):
-        generateCoordinates()
+def formatLink():
+    link = "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=47.5763831,-122.4211769&fov=80&heading=70&pitch=0&key=" + MAPS_TOKEN
+    reverse_geocode_result = gmaps.reverse_geocode((generateXCoordinate(), generateYCoordinate()))
 
-    replaceLet = link.replace("47.5763831", str(xdecimal))
-    replaceLong = replaceLet.replace("-122.4211769", str(ydecimal))
+    while(reverse_geocode_result[len(reverse_geocode_result)-1]['address_components'][len(reverse_geocode_result[len(reverse_geocode_result)-1]['address_components'])-1]['types'][0] == 'country'):
+        xdecimal = generateXCoordinate()
+        ydecimal=generateYCoordinate()
+        country = getCountry(xdecimal,ydecimal)
+        link.replace("47.5763831", str(xdecimal))
+        link.replace("-122.4211769", str(ydecimal))
+
+    return link
 
 def getCountry(lat, long):
     reverse_geocode_result = gmaps.reverse_geocode((lat, long))
@@ -68,6 +79,8 @@ def getCountry(lat, long):
         print(country)
     else:
         print('error')
+
+    return country
 
 #Run the bot
 client.run(TOKEN)
