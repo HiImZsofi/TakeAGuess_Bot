@@ -32,18 +32,6 @@ async def on_ready():
     print('Connected to bot: {}'.format(client.user.name))
     print('Bot ID: {}'.format(client.user.id))      
 
-def generateCoordinates():
-    x = random.randrange(-90, 90)
-    y = random.randrange(-180, 180)
-    xdecimal = round(x, 6)
-    ydecimal = round(y, 6)
- 
-#Function to replace longitude and latitude in link
-def formatLink(link):
-    generateCoordinates()
-    replaceLet = link.replace("47.5763831", str(xdecimal))
-    replaceLong = replaceLet.replace("-122.4211769", str(ydecimal))
-    return replaceLong
 
 #Send the formatted link to the channel
 @client.command()
@@ -56,6 +44,21 @@ async def startgame(ctx):
     await ctx.send('Welcome the game will start in 5 seconds.\nGet ready!')
     time.sleep(5)
     await ctx.send('First round\nhttps://maps.googleapis.com/maps/api/streetview?size=400x400&location=34.478005,-51.224765&fov=80&heading=70&pitch=0&key='+MAPS_TOKEN)
+
+def generateCoordinates():
+    x = random.randrange(-90, 90)
+    y = random.randrange(-180, 180)
+    xdecimal = round(x, 6)
+    ydecimal = round(y, 6)
+ 
+#Function to replace longitude and latitude in link
+def formatLink(link):
+    reverse_geocode_result = gmaps.reverse_geocode((xdecimal, ydecimal))
+    while(reverse_geocode_result[len(reverse_geocode_result)-1]['address_components'][len(reverse_geocode_result[len(reverse_geocode_result)-1]['address_components'])-1]['types'][0] == 'country'):
+        generateCoordinates()
+
+    replaceLet = link.replace("47.5763831", str(xdecimal))
+    replaceLong = replaceLet.replace("-122.4211769", str(ydecimal))
 
 def getCountry(lat, long):
     reverse_geocode_result = gmaps.reverse_geocode((lat, long))
