@@ -101,10 +101,9 @@ def existingStreetviewImage():
     global xdecimal
     global ydecimal
     #get json back from metadata link
-    with urllib.request.urlopen("https://maps.googleapis.com/maps/api/streetview/metadata?key=" + MAPS_TOKEN +"&location=" + str(xdecimal)+','+str(ydecimal)) as url:
-        data = json.load(url)
-        opened = json.loads(data)
-        print(opened["status"])
+    res = urllib.request.urlopen("https://maps.googleapis.com/maps/api/streetview/metadata?key=" + MAPS_TOKEN +"&location=" + str(xdecimal)+','+str(ydecimal))
+    data = json.load(res)
+    print(data['status'])
 
 #Run the bot
 client.run(TOKEN)
