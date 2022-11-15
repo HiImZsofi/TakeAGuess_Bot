@@ -71,7 +71,8 @@ def formatLink():
 
         xdecimal = generateXCoordinate()
         ydecimal=generateYCoordinate()
-        print(xdecimal, ydecimal)
+        print(xdecimal)
+        print(ydecimal)
         reverse_geocode_result = gmaps.reverse_geocode((xdecimal, ydecimal))
         link = 'https://maps.googleapis.com/maps/api/streetview?size=400x400&location='+str(xdecimal)+','+str(ydecimal)+'&fov=80&heading=70&pitch=0&key=' + MAPS_TOKEN
 
