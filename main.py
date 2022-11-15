@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import numpy as np
 import time
 import googlemaps
+import urllib.request, json 
 
 #Get token from .env file
 load_dotenv()
@@ -45,6 +46,12 @@ async def startgame(ctx):
     await ctx.send('Welcome the game will start in 5 seconds.\nGet ready!')
     time.sleep(5)
     await ctx.send('First round\n'+formatLink())
+
+@client.command()
+async def country(channel):
+    channel = client.get_channel(1040967366835699765)
+    await channel.send(existingStreetviewImage())
+
 
 #Functions
 def generateXCoordinate():
@@ -89,6 +96,15 @@ def getCountry(lat, long):
         print('error')
 
     return country
+
+def existingStreetviewImage():
+    global xdecimal
+    global ydecimal
+    #get json back from metadata link
+    with urllib.request.urlopen("https://maps.googleapis.com/maps/api/streetview/metadata?key=" + MAPS_TOKEN +"&location=" + str(xdecimal)+','+str(ydecimal)) as url:
+        data = json.load(url)
+        opened = json.loads(data)
+        print(opened["status"])
 
 #Run the bot
 client.run(TOKEN)
