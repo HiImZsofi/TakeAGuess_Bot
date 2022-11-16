@@ -96,7 +96,7 @@ def getCountry(lat, long):
         print('error')
 
     return country
-
+#TODO 2d array for image files and random picker for them
 def existingStreetviewImage():
     global xdecimal
     global ydecimal
